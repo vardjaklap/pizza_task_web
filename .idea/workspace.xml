@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc2f5b87-08a6-405e-be2c-4cd596ad4f37" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/cart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/mainApp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mainApp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mainApp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menu.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +60,7 @@
       <option name="presentableId" value="Default" />
       <updated>1594047451333</updated>
       <workItem from="1594047454397" duration="9186000" />
-      <workItem from="1594057644872" duration="5430000" />
+      <workItem from="1594057644872" duration="11015000" />
     </task>
     <servers />
   </component>
@@ -79,5 +72,9 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="660" y="282" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1594047908493" />
+    <state x="531" y="226" key="run.anything.popup" timestamp="1594063701041">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="531" y="226" key="run.anything.popup/0.0.1920.1030@0.0.1920.1030" timestamp="1594063701041" />
   </component>
 </project>

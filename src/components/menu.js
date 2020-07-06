@@ -72,7 +72,10 @@ class Menu extends React.Component{
         this.closeDialog = this.closeDialog.bind(this);
         this.openDialog = this.openDialog.bind(this);
         this.handlePizzaSize = this.handlePizzaSize.bind(this);
+        this.addPizza = this.addPizza.bind(this);
     }
+
+    //Handling the dialog
     openDialog(pizza){
         this.setState({
             dialogOpen: true,
@@ -85,6 +88,8 @@ class Menu extends React.Component{
             dialogOpen: false
         })
     }
+
+    //Changing the price of the pizza in a dialog according to the size
     handlePizzaSize(event, newSize){
         let price = 0;
         if(newSize == "sm"){
@@ -99,6 +104,17 @@ class Menu extends React.Component{
             chosenPrice: price
         })
     }
+    //adding the selected pizza to a cart
+    addPizza(){
+        let pizzaToCart = {
+            name: this.state.dialogPizza.name,
+            desc: this.state.dialogPizza.desc,
+            size: this.state.chosenSize,
+            price: this.state.chosenPrice
+        }
+        this.props.addToCartFunc(pizzaToCart);
+        this.closeDialog();
+    }
     render() {
     return (
         <div>
@@ -107,6 +123,7 @@ class Menu extends React.Component{
                       justify="center"
                       alignItems="stretch"
                       spacing={3}>
+                    {/*Mapping all menu items*/}
                     {this.state.pizzas.map((pizza) => {
                         return(
                             <Grid item xs={12} sm={6} md={3} key={pizza.id}>
@@ -127,7 +144,10 @@ class Menu extends React.Component{
                                             <i className="fas fa-carrot" style={{color: "green", margin: "0 4px"}}></i>
                                             }
                                         </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
+                                        <Typography variant="body1" color="textSecondary" component="p">
+                                            Sweet and salty, perfect for a party!
+                                        </Typography>
+                                        <Typography variant="subtitle2" color="textSecondary" component="p">
                                             {pizza.desc}
                                         </Typography>
                                     </CardContent>
@@ -142,6 +162,9 @@ class Menu extends React.Component{
                     })}
                 </Grid>
             </Container>
+
+            {/*Dialog to add pizza to a cart*/}
+
                 <Dialog onClose={this.closeDialog} open={this.state.dialogOpen}>
                     <DialogTitle id="simple-dialog-title">{this.state.dialogPizza.name} {this.state.dialogPizza.spicy === true &&
                     <i className="fas fa-pepper-hot" style={{color: "red", margin: "0 4px"}}></i>
@@ -156,10 +179,7 @@ class Menu extends React.Component{
                         image={this.state.dialogPizza.img}
                     />
                     <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {this.state.dialogPizza.desc}
-                        </Typography>
-                        <Grid container justify="space-between" style={{marginTop: "20px"}}>
+                        <Grid container justify="space-between" alignContent="stretch">
                             <Grid item>
                                 <ToggleButtonGroup
                                     value={this.state.chosenSize}
@@ -179,13 +199,28 @@ class Menu extends React.Component{
                                 </ToggleButtonGroup>
                             </Grid>
                             <Grid item>
+                                <Grid container alignContent="center" style={{height: "100%"}}>
+                                    <Typography variant="h5" color="textSecondary" component="p">
+                                        900ccal
+                                    </Typography>
+                                </Grid>
+
+                            </Grid>
+                        </Grid>
+                        <Typography variant="body2" color="textSecondary" component="p" style={{marginTop: "10px"}}>
+                            {this.state.dialogPizza.desc}
+                        </Typography>
+                        <Grid container justify="space-between" style={{marginTop: "20px"}}>
+                            <Grid item>
+                            </Grid>
+                            <Grid item>
                                 <Typography variant="h4" color="textSecondary" component="p">
                                     ${this.state.chosenPrice}
                                 </Typography>
                             </Grid>
                         </Grid>
                     </CardContent>
-                        <Button size="small" color="primary" variant="contained" style={{height: "80px"}}>
+                        <Button size="small" color="primary" variant="contained" style={{height: "80px"}} onClick={this.addPizza}>
                             Add to order
                         </Button>
                 </Dialog>

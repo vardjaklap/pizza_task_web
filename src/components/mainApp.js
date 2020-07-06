@@ -16,12 +16,17 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Menu from "./menu";
 import Cart from "./cart";
+import grey from "@material-ui/core/colors/grey";
+import Button from "@material-ui/core/Button";
 
 const theme = createMuiTheme({
     palette: {
         primary: {
             main: amber[500],
         },
+        secondary: {
+            main: grey[900]
+        }
     },
 });
 const useStyles = makeStyles((theme) => ({
@@ -64,8 +69,44 @@ class mainApp extends React.Component{
                     size: "lg",
                     qnt: 3
                 },
-            ]
+            ],
+            incr: 10
         };
+        this.addToCart = this.addToCart.bind(this);
+        this.updateCart = this.updateCart.bind(this);
+    }
+
+    updateCart(newCart){
+        this.setState({
+            cart: newCart
+        })
+    }
+
+    addToCart(pizzaToAdd){
+        let check = false;
+        this.state.cart.filter((pizza) => {
+            if(pizza.name === pizzaToAdd.name && pizza.size == pizzaToAdd.size){
+                pizza.qnt++;
+                check = true;
+            }
+        })
+        if(!check){
+            let newCart = this.state.cart;
+            newCart.push({
+                id: this.state.incr,
+                name: pizzaToAdd.name,
+                desc: pizzaToAdd.desc,
+                price: pizzaToAdd.price,
+                size: pizzaToAdd.size,
+                qnt: 1
+            });
+            this.setState({
+                cart: newCart,
+                incr: this.state.incr + 1
+            })
+            console.log(this.state.incr)
+        }
+
     }
     render(){
     return (
@@ -77,8 +118,11 @@ class mainApp extends React.Component{
                             Pizza Co.
                         </Typography>
                         <div >
-                            <IconButton aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={this.state.cart.length} color="secondary">
+                            <Button variant="contained" color="secondary" component={Link} to="/menu">
+                                Menu
+                            </Button>
+                            <IconButton aria-label="show 4 new mails" color="inherit" component={Link} to="/cart">
+                                <Badge badgeContent={this.state.cart.length} color="error">
                                     <ShoppingCartIcon />
                                 </Badge>
                             </IconButton>
@@ -99,10 +143,10 @@ class mainApp extends React.Component{
                             <div> </div>
                         </Route>
                         <Route exact path="/menu">
-                            <Menu/>
+                            <Menu addToCartFunc = {this.addToCart}/>
                         </Route>
                         <Route exact path="/cart">
-                            <Cart cart={this.state.cart}/>
+                            <Cart cart={this.state.cart} updateCartFunc = {this.updateCart}/>
                         </Route>
                     </Switch>
                 </div>

@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 
 class Cart  extends React.Component {
@@ -38,8 +39,10 @@ class Cart  extends React.Component {
         cart.forEach((item) => {
             subtotal += item.price * item.qnt;
         })
+        subtotal =  parseFloat(subtotal.toFixed(2));
         let tax = (subtotal * 0.05).toFixed(2);
-        let total = subtotal + parseFloat(tax);
+        let total = parseFloat((subtotal + parseFloat(tax) + 3.99).toFixed(2));
+
         this.setState({
             subtotal: subtotal,
             tax: tax,
@@ -48,11 +51,28 @@ class Cart  extends React.Component {
     }
     deleteItem(id){
         let cart = this.state.cart;
+        let newCart = cart.filter((item) => {
+                if(item.id === id){
+                    item.qnt = item.qnt - 1;
+                    if(item.qnt !== 0){
+                        return item;
+                    }
+                }else{
+                    return item;
+                }
+            })
+        this.setState({
+            cart: newCart
+        })
+        this.props.updateCartFunc(newCart);
+        this.calcTotal(newCart)
+
     }
     render(){
     return (
         <div>
             <Container>
+                {this.state.cart.length > 0 ?
                 <Grid container justify="center">
                     <Grid item xs={12} sm={10} md={8}>
                         <Card style={{width: "100%", marginTop: "20px"}}>
@@ -104,7 +124,7 @@ class Cart  extends React.Component {
                                                 </Grid>
                                             </Grid>
                                             <Grid item xs={1}>
-                                                <Button style={{width: "100%", height: "100%"}}>
+                                                <Button style={{width: "100%", height: "100%"}} onClick={() => this.deleteItem(item.id)}>
                                                     X
                                                 </Button>
                                             </Grid>
@@ -167,6 +187,18 @@ class Cart  extends React.Component {
                         </Card>
                     </Grid>
                 </Grid>
+                    : <Grid container  direction="column"
+                            justify="center"
+                            alignItems="center" style={{height: "80vh"}}>
+                        <Grid item>
+                            <ShoppingCartIcon style={{fontSize: "300px"}} color="disabled" />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h2" style={{color: "grey"}}>
+                                Your cart is empty.
+                            </Typography>
+                        </Grid>
+                    </Grid>}
             </Container>
         </div>
 
