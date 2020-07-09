@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fc2f5b87-08a6-405e-be2c-4cd596ad4f37" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/mainApp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mainApp.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menu.js" afterDir="false" />
@@ -60,7 +61,8 @@
       <option name="presentableId" value="Default" />
       <updated>1594047451333</updated>
       <workItem from="1594047454397" duration="9186000" />
-      <workItem from="1594057644872" duration="11015000" />
+      <workItem from="1594057644872" duration="11947000" />
+      <workItem from="1594231577055" duration="18902000" />
     </task>
     <servers />
   </component>
@@ -72,6 +74,14 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="660" y="282" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1594047908493" />
+    <state x="685" y="190" key="FileChooserDialogImpl" timestamp="1594232768760">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="685" y="190" key="FileChooserDialogImpl/0.0.1920.1030@0.0.1920.1030" timestamp="1594232768760" />
+    <state x="226" y="212" key="new project wizard" timestamp="1594232770493">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="226" y="212" key="new project wizard/0.0.1920.1030@0.0.1920.1030" timestamp="1594232770493" />
     <state x="531" y="226" key="run.anything.popup" timestamp="1594063701041">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>

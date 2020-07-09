@@ -13,6 +13,9 @@ import Slide from "@material-ui/core/Slide";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
+import Divider from "@material-ui/core/Divider";
+import Chip from "@material-ui/core/Chip";
+import Grow from "@material-ui/core/Grow";
 
 
 class Menu extends React.Component{
@@ -21,44 +24,12 @@ class Menu extends React.Component{
         this.state = {
             dialogOpen: false,
             pizzas: [
-                {
-                    id: 0,
-                    name: "Margherita",
-                    desc: "Cheese. Mozarella.",
-                    veg: true,
-                    spicy: false,
-                    sm: 10.99,
-                    md: 14.99,
-                    lg: 17.99,
-                    img: "https://media.dominos.ua/menu/product_osg_image_category/2019/10/04/%D0%9C%D0%B0%D1%80%D0%B3%D0%B0%D1%80%D0%B8%D1%82%D0%B0_300dpi-min.jpg"
-                },
-                {
-                    id: 1,
-                    name: "Texas",
-                    desc: "Corn, Onion, Mushrooms, Bavarian sausages, Mozarella, BBQ sauce",
-                    veg: true,
-                    spicy: true,
-                    sm: 10.99,
-                    md: 14.99,
-                    lg: 17.99,
-                    img: "https://media.dominos.ua/menu/product_osg_image_category/2019/10/03/%D0%A2%D0%B5%D1%85%D0%B0%D1%81_300dpi-min.jpg"
-                },
-                {
-                    id: 2,
-                    name: "Pepperoni",
-                    desc: "Mozarella, Peperoni, Tomatoes, BBQ sauce",
-                    veg: false,
-                    spicy: false,
-                    sm: 10.99,
-                    md: 14.99,
-                    lg: 17.99,
-                    img: "https://media.dominos.ua/menu/product_osg_image_mobile/2018/02/28/%D0%9F%D0%B5%D0%BF%D0%BF%D0%B5%D1%80%D0%BE%D0%BD%D0%B8_%D0%B8_%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D1%8B_300dpi.jpg"
-                }
+
             ],
             dialogPizza: {
                 id: 1,
                 name: "Texas",
-                desc: "Corn, Onion, Mushrooms, Bavarian sausages, Mozarella, BBQ sauce",
+                description: "Corn, Onion, Mushrooms, Bavarian sausages, Mozarella, BBQ sauce",
                 veg: true,
                 spicy: true,
                 sm: 10.99,
@@ -80,7 +51,8 @@ class Menu extends React.Component{
         this.setState({
             dialogOpen: true,
             dialogPizza: pizza,
-            chosenPrice: pizza.sm
+            chosenPrice: pizza.price_sm,
+            chosenSize: "sm"
         })
     }
     closeDialog(){
@@ -93,11 +65,11 @@ class Menu extends React.Component{
     handlePizzaSize(event, newSize){
         let price = 0;
         if(newSize == "sm"){
-            price = this.state.dialogPizza.sm;
+            price = this.state.dialogPizza.price_sm;
         }else if(newSize == "md"){
-            price = this.state.dialogPizza.md;
+            price = this.state.dialogPizza.price_md;
         }else if(newSize == "lg"){
-            price = this.state.dialogPizza.lg;
+            price = this.state.dialogPizza.price_lg;
         }
         this.setState({
             chosenSize: newSize,
@@ -108,10 +80,11 @@ class Menu extends React.Component{
     addPizza(){
         let pizzaToCart = {
             name: this.state.dialogPizza.name,
-            desc: this.state.dialogPizza.desc,
+            desc: this.state.dialogPizza.ingr,
             size: this.state.chosenSize,
-            price: this.state.chosenPrice
-        }
+            price: this.state.chosenPrice,
+            imgurl: this.state.dialogPizza.imgurl
+        };
         this.props.addToCartFunc(pizzaToCart);
         this.closeDialog();
     }
@@ -124,39 +97,49 @@ class Menu extends React.Component{
                       alignItems="stretch"
                       spacing={3}>
                     {/*Mapping all menu items*/}
-                    {this.state.pizzas.map((pizza) => {
+                    {this.props.fullMenu.map((pizza) => {
                         return(
                             <Grid item xs={12} sm={6} md={3} key={pizza.id}>
-                                <Card style={{height: "100%", display: "flex",flexDirection: "column"}}>
-                                    <CardMedia
-                                        component="img"
-                                        alt="Contemplative Reptile"
-                                        height="140"
-                                        image={pizza.img}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {pizza.name}
-                                            {pizza.spicy === true &&
-                                            <i className="fas fa-pepper-hot" style={{color: "red", margin: "0 4px"}}></i>
+                                <Grow in
+                                      style={{ transformOrigin: '0 0 0' }}
+                                      {...(true ? { timeout: (pizza.id * 150) } : {})}>
+                                    <Card style={{height: "100%", display: "flex",flexDirection: "column"}}>
+                                        <CardMedia
+                                            component="img"
+                                            alt="Contemplative Reptile"
+                                            height="140"
+                                            image={pizza.imgurl}
+                                        />
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {pizza.name}
+                                                {pizza.spicy === 1 &&
+                                                <i className="fas fa-pepper-hot" style={{color: "red", margin: "0 4px"}}></i>
+                                                }
+                                                {pizza.vegetarian === 1 &&
+                                                <i className="fas fa-carrot" style={{color: "green", margin: "0 4px"}}></i>
+                                                }
+                                            </Typography>
+                                            <Typography variant="body1" color="textSecondary" component="p" >
+                                                {pizza.description}
+                                            </Typography>
+                                            {
+                                                pizza.ingr.split(', ').map((str) => {
+                                                    return(
+                                                        <Chip key={str} style={{margin: "2px"}}
+                                                              label={str}
+                                                        />
+                                                    )
+                                                })
                                             }
-                                            {pizza.veg === true &&
-                                            <i className="fas fa-carrot" style={{color: "green", margin: "0 4px"}}></i>
-                                            }
-                                        </Typography>
-                                        <Typography variant="body1" color="textSecondary" component="p">
-                                            Sweet and salty, perfect for a party!
-                                        </Typography>
-                                        <Typography variant="subtitle2" color="textSecondary" component="p">
-                                            {pizza.desc}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions  style={{marginTop: "auto"}}>
-                                        <Button size="small" color="primary" variant="contained" onClick={() => this.openDialog(pizza)}>
-                                            Add
-                                        </Button>
-                                    </CardActions>
-                                </Card>
+                                        </CardContent>
+                                        <CardActions  style={{marginTop: "auto"}}>
+                                            <Button size="small" color="primary" variant="contained" onClick={() => this.openDialog(pizza)}>
+                                                Add
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grow>
                             </Grid>
                         )
                     })}
@@ -166,17 +149,17 @@ class Menu extends React.Component{
             {/*Dialog to add pizza to a cart*/}
 
                 <Dialog onClose={this.closeDialog} open={this.state.dialogOpen}>
-                    <DialogTitle id="simple-dialog-title">{this.state.dialogPizza.name} {this.state.dialogPizza.spicy === true &&
+                    <DialogTitle id="simple-dialog-title">{this.state.dialogPizza.name} {this.state.dialogPizza.spicy === 1 &&
                     <i className="fas fa-pepper-hot" style={{color: "red", margin: "0 4px"}}></i>
                     }
-                        {this.state.dialogPizza.veg === true &&
+                        {this.state.dialogPizza.vegetarian === 1 &&
                         <i className="fas fa-carrot" style={{color: "green", margin: "0 4px"}}></i>
                         }</DialogTitle>
                     <CardMedia
                         component="img"
                         alt="Contemplative Reptile"
                         height="240"
-                        image={this.state.dialogPizza.img}
+                        image={this.state.dialogPizza.imgurl}
                     />
                     <CardContent>
                         <Grid container justify="space-between" alignContent="stretch">
@@ -201,14 +184,14 @@ class Menu extends React.Component{
                             <Grid item>
                                 <Grid container alignContent="center" style={{height: "100%"}}>
                                     <Typography variant="h5" color="textSecondary" component="p">
-                                        900ccal
+                                        {this.state.dialogPizza.cal}ccal
                                     </Typography>
                                 </Grid>
 
                             </Grid>
                         </Grid>
                         <Typography variant="body2" color="textSecondary" component="p" style={{marginTop: "10px"}}>
-                            {this.state.dialogPizza.desc}
+                            {this.state.dialogPizza.description}
                         </Typography>
                         <Grid container justify="space-between" style={{marginTop: "20px"}}>
                             <Grid item>
