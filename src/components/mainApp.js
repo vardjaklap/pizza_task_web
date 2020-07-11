@@ -21,6 +21,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import History from "./history";
 
 const theme = createMuiTheme({
     palette: {
@@ -148,9 +149,8 @@ class mainApp extends React.Component{
                             </IconButton>
                             <IconButton
                                 edge="end"
-                                aria-label="account of current user"
-                                aria-haspopup="true"
                                 color="inherit"
+                                component={Link} to="/orders"
                             >
                                 <AccountCircle />
                             </IconButton>
@@ -221,6 +221,9 @@ class mainApp extends React.Component{
                         </Route>
                         <Route exact path="/cart">
                             <Cart cart={this.state.cart} updateCartFunc = {this.updateCart}/>
+                        </Route>
+                        <Route exact path="/orders">
+                            <History />
                         </Route>
                     </Switch>
                 </div>

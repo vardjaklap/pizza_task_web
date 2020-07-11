@@ -108,7 +108,7 @@ class Cart  extends React.Component {
                 <Grid container justify="center">
                     <Grid item xs={12} sm={10} md={8}>
                         <Grow in>
-                            <Card style={{width: "100%", marginTop: "20px"}}>
+                            <Card style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}>
                                 <CardContent>
                                     <Typography gutterBottom variant="h4" component="h2">
                                         Your cart
@@ -268,12 +268,19 @@ class Cart  extends React.Component {
                     <DialogContentText id="alert-dialog-description">
                         Please provide the following information
                     </DialogContentText>
+
                     <Grid container direction="column">
                         <Grid item>
                             <TextField label="Username" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                         <Grid item>
-                            <TextField label="Address" variant="outlined" style={{margin: "15px 0 0"}}/>
+                            <TextField label="First name" variant="outlined" style={{margin: "15px 0 0"}}/>
+                        </Grid>
+                        <Grid item>
+                            <TextField label="Surname" variant="outlined" style={{margin: "15px 0 0"}}/>
+                        </Grid>
+                        <Grid item>
+                            <TextField multiline rows={4} label="Full address" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                     </Grid>
 
