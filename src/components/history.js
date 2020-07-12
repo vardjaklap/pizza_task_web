@@ -5,15 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import Grow from "@material-ui/core/Grow";
 import TextField from "@material-ui/core/TextField";
 
@@ -23,9 +16,13 @@ class History extends React.Component {
         super(props);
         this.state = {
             logged: false,
-            orders: []
+            orders: [],
+            username: "",
+            surname: ""
         };
-        this.findOrders = this.findOrders.bind(this)
+        this.findOrders = this.findOrders.bind(this);
+        this.handleReturn = this.handleReturn.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
     componentDidMount() {
 
@@ -34,7 +31,7 @@ class History extends React.Component {
         fetch("http://localhost:9000/findOrders", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: "alexperesta", surname: "peresta" })
+            body: JSON.stringify({ username: this.state.username.toLowerCase(), surname: this.state.surname.toLowerCase() })
         })
             .then(response => response.text())
             .then((r) => {
@@ -42,8 +39,21 @@ class History extends React.Component {
                     logged: true,
                     orders: JSON.parse(r)
                 });
-                console.log(r);
             });
+    }
+    handleReturn(){
+        this.setState({
+            logged: false,
+            orders: []
+        })
+    }
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
     }
     render(){
         return (
@@ -55,18 +65,14 @@ class History extends React.Component {
                                 <Grow in>
                                     <Card style={{ marginTop: "20px", marginBottom: "20px"}}>
                                         <CardContent>
-                                            <Grid container direction="column">
+                                            <Grid container direction="column" alignContent="center">
                                                 <Grid item>
                                                     <Typography gutterBottom variant="h5" component="h2">
-                                                        Provide the following info to view your past orders
+                                                        View your past orders
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item>
-                                                    <TextField label="Username" variant="outlined" style={{margin: "15px 0 0"}}/>
-                                                </Grid>
-                                                <Grid item>
-                                                    <TextField label="Surname" variant="outlined" style={{margin: "15px 0 0"}}/>
-                                                </Grid>
+                                                    <TextField name="username" onChange={this.handleInputChange} label="Username" variant="outlined" style={{margin: "15px 0 0"}}/>
+                                                    <TextField name="surname"  onChange={this.handleInputChange} label="Surname" variant="outlined" style={{margin: "15px 0 0"}}/>
                                             </Grid>
                                         </CardContent>
                                         <CardActions>
@@ -134,9 +140,28 @@ class History extends React.Component {
                                         </Card>
                                     </Grid>)
                                 })}
-                            </Grid> : <div>
-
-                            </div>}
+                            </Grid> : <Grid container justify="center"
+                                            alignItems="center" style={{margin: "20px 0"}}>
+                                <Card style={{padding: "20px"}}>
+                                    <Grid container direction="column"
+                                          justify="center"
+                                          alignItems="center">
+                                        <Grid item>
+                                            <HourglassEmptyIcon style={{fontSize: "300px"}} color="disabled" />
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="h2" style={{color: "grey"}}>
+                                                No orders were found
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button variant="contained" style={{marginTop: '20px'}} color="primary" onClick={this.handleReturn}>
+                                                Return
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Card>
+                            </Grid>}
 
                         </Grid>}
                 </Container>

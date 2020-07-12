@@ -1,5 +1,5 @@
 import React from 'react';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { amber } from '@material-ui/core/colors';
 import {
     BrowserRouter as Router,
@@ -22,6 +22,8 @@ import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import History from "./history";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 const theme = createMuiTheme({
     palette: {
@@ -33,18 +35,6 @@ const theme = createMuiTheme({
         }
     },
 });
-const useStyles = makeStyles((theme) => ({
-    grow: {
-        flexGrow: 1,
-    },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
-}));
-
 
 class mainApp extends React.Component{
     constructor(props) {
@@ -52,15 +42,7 @@ class mainApp extends React.Component{
         this.state = {
             fullMenu: [],
             cart: [
-                {
-                    id: 0,
-                    name: "Margherita",
-                    desc: "Cheese. Mozarella.",
-                    price: 10.99,
-                    size: "sm",
-                    imgurl: "https://media.dominos.ua/__sized__/menu/product_osg_image_category/2019/10/04/BBQ_DeLUX_300dpi-min-thumbnail-960x960-70.jpg",
-                    qnt: 1,
-                }
+
             ],
             incr: 10,
             snackOpen: false,
@@ -70,6 +52,7 @@ class mainApp extends React.Component{
         this.updateCart = this.updateCart.bind(this);
         this.calcItems = this.calcItems.bind(this);
         this.closeSnack = this.closeSnack.bind(this);
+        this.completeOrder = this.completeOrder.bind(this);
     }
     componentDidMount() {
         fetch("http://localhost:9000/testAPI")
@@ -83,22 +66,32 @@ class mainApp extends React.Component{
         this.setState({
             cart: newCart
         })
-        this.calcItems();
+        if(newCart.length === 0){
+            this.setState({
+                itemsInCart: 0
+            })
+        }else{
+            this.calcItems();
+        }
+
     }
 
     calcItems(){
         let itemsInCart = 0;
-    this.state.cart.forEach((item) => {
-        itemsInCart += item.qnt;
-    })
+        if(this.state.cart.length !== 0){
+            this.state.cart.forEach((item) => {
+                itemsInCart += item.qnt;
+            })
+        }
         this.setState({
             itemsInCart: itemsInCart
-        })
+        });
+
     }
     addToCart(pizzaToAdd){
         let check = false;
         this.state.cart.filter((pizza) => {
-            if(pizza.name === pizzaToAdd.name && pizza.size == pizzaToAdd.size){
+            if(pizza.name === pizzaToAdd.name && pizza.size === pizzaToAdd.size){
                 pizza.qnt++;
                 check = true;
             }
@@ -127,6 +120,12 @@ class mainApp extends React.Component{
     closeSnack(){
         this.setState({
             snackOpen: false
+        })
+    }
+    completeOrder(){
+        this.setState({
+            snackOpen: true,
+            snackMessage: "The order has been received!"
         })
     }
     render(){
@@ -214,13 +213,28 @@ class mainApp extends React.Component{
                     </div>
                     <Switch>
                         <Route exact path="/">
-                            <div> </div>
+                            <Grid container justify="center">
+                                <Grid item>
+                                    <Card style={{marginTop: "20px"}}>
+                                        <CardContent>
+                                            <Typography color="textSecondary" variant="h3" gutterBottom>
+                                                Welcome to our pizza delivery!
+                                            </Typography>
+
+                                            <Button variant="contained" color="primary"  component={Link} to="/menu" style={{height: "120px", width: "100%"}}>
+                                                Proceed to the menu
+                                            </Button>
+
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
                         </Route>
                         <Route exact path="/menu">
                             <Menu addToCartFunc = {this.addToCart} fullMenu={this.state.fullMenu}/>
                         </Route>
                         <Route exact path="/cart">
-                            <Cart cart={this.state.cart} updateCartFunc = {this.updateCart}/>
+                            <Cart cart={this.state.cart} updateCartFunc = {this.updateCart}  completeOrder = {this.completeOrder}/>
                         </Route>
                         <Route exact path="/orders">
                             <History />

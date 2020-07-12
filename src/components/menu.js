@@ -9,11 +9,8 @@ import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
-import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
 import Grow from "@material-ui/core/Grow";
 
@@ -64,11 +61,11 @@ class Menu extends React.Component{
     //Changing the price of the pizza in a dialog according to the size
     handlePizzaSize(event, newSize){
         let price = 0;
-        if(newSize == "sm"){
+        if(newSize === "sm"){
             price = this.state.dialogPizza.price_sm;
-        }else if(newSize == "md"){
+        }else if(newSize === "md"){
             price = this.state.dialogPizza.price_md;
-        }else if(newSize == "lg"){
+        }else if(newSize === "lg"){
             price = this.state.dialogPizza.price_lg;
         }
         this.setState({

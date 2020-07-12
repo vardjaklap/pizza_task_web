@@ -37,10 +37,16 @@ class Cart  extends React.Component {
             tax: 0,
             total: 0,
             euroPrice: 0,
-            dialog: false
+            dialog: false,
+            username: "",
+            first_name: "",
+            surname: "",
+            address: ""
         };
         this.closeDialog = this.closeDialog.bind(this);
         this.openDialog = this.openDialog.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.confirmOrder = this.confirmOrder.bind(this);
 
     }
     componentDidMount() {
@@ -99,6 +105,46 @@ class Cart  extends React.Component {
         this.setState({
             dialog: false
         })
+    }
+    confirmOrder(){
+        let order = "";
+        this.state.cart.forEach((item) => {
+            order += item.qnt.toString();
+            order += "X ";
+            order += item.name + " (" + item.size + ")";
+            order += "\n";
+        })
+        let price = "";
+        price += "$" + this.state.total + "/€" +this.state.euroPrice;
+
+        let date = new Date();
+        let timeOfOrder = "" + date.getFullYear() + "-" + (date.getMonth()+1).toString() + "-" + date.getDate() + " 00:00:00";
+
+        fetch("http://localhost:9000/insertOrder", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: this.state.username.toLowerCase(), first_name: this.state.first_name.toLowerCase(),
+                surname: this.state.surname.toLowerCase(),
+                address: this.state.address,
+                order_desc: order,
+                price: price,
+                date: timeOfOrder})
+        }).then(response => response.text());
+        this.closeDialog()
+        let newCart = [];
+        this.setState({
+            cart: newCart
+        });
+        this.props.updateCartFunc(newCart);
+        this.props.completeOrder();
+    }
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
     }
     render(){
     return (
@@ -271,23 +317,23 @@ class Cart  extends React.Component {
 
                     <Grid container direction="column">
                         <Grid item>
-                            <TextField label="Username" variant="outlined" style={{margin: "15px 0 0"}}/>
+                            <TextField name="username" onChange={this.handleInputChange} label="Username" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                         <Grid item>
-                            <TextField label="First name" variant="outlined" style={{margin: "15px 0 0"}}/>
+                            <TextField name="first_name" onChange={this.handleInputChange} label="First name" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                         <Grid item>
-                            <TextField label="Surname" variant="outlined" style={{margin: "15px 0 0"}}/>
+                            <TextField name="surname"  onChange={this.handleInputChange} label="Surname" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                         <Grid item>
-                            <TextField multiline rows={4} label="Full address" variant="outlined" style={{margin: "15px 0 0"}}/>
+                            <TextField name="address" onChange={this.handleInputChange} multiline rows={4} label="Full address" variant="outlined" style={{margin: "15px 0 0"}}/>
                         </Grid>
                     </Grid>
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.closeDialog} color="primary" autoFocus variant="contained">
+                    <Button onClick={this.confirmOrder} color="primary" autoFocus variant="contained">
                         Get pizza!
                     </Button>
                 </DialogActions>
